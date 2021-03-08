@@ -1,0 +1,63 @@
+body {
+    margin: 0px;
+}
+#deleteBtn{
+    background-color: #db3d16;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 16px;
+    cursor: pointer;
+}
+#sidebar {
+    float: right;
+    width: 20%;
+    border: 1px solid black;
+    margin-bottom:40px;
+}
+#leftcontent {
+    width: 79%;
+    float: left;
+    margin-bottom: 40px;
+}
+#centercontent {
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    text-align: center;
+    width: 50%;
+}
+#mainfooter {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 40px;
+    width:100%;
+    background:#999;
+    text-align: end;
+}
+#mainmenu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333333;
+}
+#mainmenu ul li {
+    float: left;
+}
+#mainmenu ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+#mainmenu ul li a:hover {
+    background-color: #111111;
+}
