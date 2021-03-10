@@ -6,7 +6,7 @@ class dbHandler extends Database{
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "SELECT Id, Username, Post, PostDate FROM GuestBookTable";
+            $sql = "SELECT Id, Username, Post, PostDate FROM ProjectTable";
             $result = $db->connectionString->query($sql);
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
@@ -23,7 +23,7 @@ class dbHandler extends Database{
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "INSERT INTO GuestBookTable (Username, Post, PostDate)
+            $sql = "INSERT INTO ProjectTable (Username, Post, PostDate)
                     VALUES ('".$postObj->username."', '".$postObj->text."', '".$postObj->date."')";
             $db->connectionString->query($sql);
             $db->dbDisconnect();
@@ -38,7 +38,7 @@ class dbHandler extends Database{
                 echo "<p>".$currentPost->username."</p>";
                 echo "<p>".$currentPost->text."</p>";
                 echo "Publicerat ".$currentPost->date;
-                echo "<a href='dbGuest.php?delPostDb=".$currentPost->id."' id='deleteBtn'>Radera Inlägg </a>";
+                echo "<a href='index.php?delPostDb=".$currentPost->id."' id='deleteBtn'>Radera Inlägg </a>";
                 echo "<p style='border-bottom:1px solid black;'></p>";
                 $index++;
             }
@@ -48,7 +48,7 @@ class dbHandler extends Database{
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "DELETE FROM GuestBookTable where Id='".$id."'";
+            $sql = "DELETE FROM ProjectTable where Id='".$id."'";
             $db->connectionString->query($sql);
             $db->dbDisconnect();
         }

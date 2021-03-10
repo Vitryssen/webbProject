@@ -1,28 +1,38 @@
 <?php
-$page_title = "Startsida";
+session_start();
+$page_title = "Home Page";
 include("includes/header.php");
-include("includes/leftContent.php");
+include("includes/centerContent.php");
+include("config/Dbconfig.php");
+include('classes/dbHandler.php');
+include('classes/post.php');
+if(!isset($_SESSION['dbHandler'])){
+    $dbHandler = new dbHandler();
+    $dbHandler->fetchPosts();
+    $_SESSION['dbHandler'] = serialize($dbHandler);
+}
+if(isset($_GET['delPostDb']) && isset($_SESSION['dbHandler'])){
+    $dbHandler = unserialize($_SESSION['dbHandler']);
+    $dbHandler->deletePost($_GET['delPostDb']);
+}
 ?>
 
-<h2>Startsidan</h2>
+<h1>Thoughts</h1>
+<div id="TextInputBox">
+<form action="functions/addPostDb.php" method="post">
+<p id="usernameInput">Username: <input type="text" name="author"></p>
+<p id="thoughtText">Thought:<p> 
+<textarea id="thoughtInput" cols="40" rows="2" name="message"></textarea>
+<input id="sendButton" type="submit" name="addPost" value="Send Thought">
+</form>
+</div>
 
-<dl>
-<dt>Har du tidigare erfarenhet av utveckling med PHP?</dt>
-<dd>Ja</dd>
-<dt>Hur har du valt att strukturera upp dina filer och kataloger?</dt>
-<dd>root för sidor, js for eventuell js kod, includes för inkluderade php filer och css för css filer</dd>
-<dt>Har du följt guiden, eller skapat på egen hand?</dt>
-<dd>Följt guiden</dd>
-<dt>Har du gjort några förbättringar eller vidareutvecklingar av guiden (om du följt denna)?</dt>
-<dd>Lagt till css</dd>
-<dt>Vilken utvecklingsmiljö har du använt för uppgiften (Editor, webbserver etcetera)?</dt>
-<dd>VSCode med sftp och skolans webhosting</dd>
-<dt>Har något varit svårt med denna uppgift?</dt>
-<dd>Nej</dd>
-</dl>
-
+<div id="PostContainer"></div>
 
 <?php
-include("includes/sidebar.php");
+if(isset($_SESSION['dbHandler'])){
+    $dbHandler = unserialize($_SESSION['dbHandler']);
+    $dbHandler->showPosts();
+}
 include("includes/footer.php");
 ?>

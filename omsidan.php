@@ -1,11 +1,8 @@
 <?php
-$page_title = "Del 3";
+$page_title = "About Page";
 include("includes/header.php");
-include("includes/leftContent.php");
-include("includes/del3.php");
 ?>
 
 <?php
-include("includes/sidebar.php");
 include("includes/footer.php");
 ?>

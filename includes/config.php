@@ -1,4 +1,4 @@
 <?php
-    $site_title = "Min webbplats";
+    $site_title = "Project";
     $divider = " | ";
 ?>

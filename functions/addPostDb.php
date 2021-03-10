@@ -14,5 +14,5 @@ if(isset($_REQUEST['author']) && isset($_REQUEST['message'])){
         $Shop->addPost(new Post($_REQUEST['author'], $_REQUEST['message'], date('m/d/Y H:i:s', time())));
     }
 }
-header("location: ../dbGuest.php");
+header("location: ../index.php");
 ?>
