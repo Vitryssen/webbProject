@@ -6,23 +6,57 @@ class dbHandler extends Database{
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "SELECT Id, Username, Post, PostDate FROM ProjectPosts";
+            $sql = "SELECT Id, Username, Post, PostDate, imageUrl FROM ProjectPosts";
             $result = $db->connectionString->query($sql);
             while($row = $result->fetch()) {
-                $tempPost = new Post($row["Username"], $row["Post"], $row["PostDate"]);
+                $tempPost = new Post($row["Username"], $row["Post"], $row["PostDate"], $row["imageUrl"]);
                 $tempPost->id = $row['Id'];
                 $this->posts[] = $tempPost;
             }
             $db->dbDisconnect();
         }
     }
+    public function uploadFile(){
+        $target_dir = "../../writeable/uploads/";
+        $target_file = $target_dir . basename($_FILES["file"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $fileName = uniqid(rand(), true) . ".".$imageFileType;
+        $target_file = $target_dir . $fileName;
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+            if($check !== false) {
+                echo "File is an image - " . $check["mime"] . ".";
+                $uploadOk = 1;
+            } 
+            else {
+                echo "File is not an image.";
+                $uploadOk = 0;
+            }
+        }
+        if (file_exists($target_file)) {
+            $uploadOk = 0;
+        }
+        if ($_FILES["file"]["size"] > 500000) {
+            $uploadOk = 0;
+        }
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" ) {
+            $uploadOk = 0;
+        }
+        if($uploadOk){
+            move_uploaded_file($_FILES["file"]["tmp_name"], $target_file);
+            return $fileName;
+        }
+        return 0;
+    }
     public function addPost($postObj){
         $this->posts[] = $postObj;
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "INSERT INTO ProjectPosts (Username, Post, PostDate)
-                    VALUES ('".$postObj->username."', '".$postObj->text."', '".$postObj->date."')";
+            $sql = "INSERT INTO ProjectPosts (Username, Post, PostDate, imageUrl)
+                    VALUES ('".$postObj->username."', '".$postObj->text."', '".$postObj->date."', '".$postObj->imageUrl."')";
             $db->connectionString->query($sql);
             $db->dbDisconnect();
         }
@@ -35,6 +69,7 @@ class dbHandler extends Database{
             foreach($tempPosts as &$currentPost){
                 echo "<p>".$currentPost->username."</p>";
                 echo "<p>".$currentPost->text."</p>";
+                echo "<img src='".$currentPost->imageUrl."' width='300' height='200'>";
                 echo "Publicerat ".$currentPost->date;
                 echo "<a href='index.php?delPostDb=".$currentPost->id."' id='deleteBtn'>Radera Inlägg </a>";
                 echo "<p style='border-bottom:1px solid black;'></p>";
@@ -46,6 +81,11 @@ class dbHandler extends Database{
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
+            $sql = "SELECT imageUrl FROM ProjectPosts where Id='".$id."'";
+            $stmt = $db->connectionString->prepare($sql);
+            $stmt->execute();
+            $post = $stmt->fetch();
+            unlink($post[0]);
             $sql = "DELETE FROM ProjectPosts where Id='".$id."'";
             $db->connectionString->query($sql);
             $db->dbDisconnect();
