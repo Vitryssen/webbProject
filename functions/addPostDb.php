@@ -6,19 +6,15 @@ include('../classes/dbHandler.php');
 include('../classes/post.php');
 session_start();
 $Shop = new dbHandler();
-if(isset($_SESSION['uname']) && isset($_REQUEST['message']) && isset($_FILES['file'])){
+if(isset($_SESSION['uname']) && isset($_REQUEST['message'])){
     if(strlen($_SESSION['uname']) > 0 && strlen($_REQUEST['message']) > 0){
-        $temp = $Shop->uploadFile();
-        if($temp != 0)
-            $Shop->addPost(new Post($_SESSION['uname'], $_REQUEST['message'], date('m/d/Y H:i:s', time()), "../writeable/uploads/".$temp));
-        else{
-            //failed to upload file, cancel the post
+        $newPost = new Post($_SESSION['uname'], filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING), date('m/d/Y H:i:s', time()), NULL);
+        if(isset($_FILES['file'])){
+            $temp = $Shop->uploadFile();
+            if($temp != 0)
+                $newPost->imageUrl = "../writeable/uploads/".$temp;
         }
-    }
-}
-else if(isset($_SESSION['uname']) && isset($_REQUEST['message'])){
-    if(strlen($_SESSION['uname']) > 0 && strlen($_REQUEST['message']) > 0){
-        $Shop->addPost(new Post($_SESSION['uname'], $_REQUEST['message'], date('m/d/Y H:i:s', time()), NULL));
+        $Shop->addPost($newPost);
     }
 }
 header("location: ../index.php");

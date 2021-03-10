@@ -56,8 +56,13 @@ class dbHandler extends Database{
         $db->dbConnect();
         if ($db->connectionString) {
             $sql = "INSERT INTO ProjectPosts (Username, Post, PostDate, imageUrl)
-                    VALUES ('".$postObj->username."', '".$postObj->text."', '".$postObj->date."', '".$postObj->imageUrl."')";
-            $db->connectionString->query($sql);
+                    VALUES (:username, :text, :date, :url)";
+            $stmt = $db->connectionString->prepare($sql);
+            $stmt->bindParam(':username', $postObj->username, PDO::PARAM_STR);
+            $stmt->bindParam(':text', $postObj->text, PDO::PARAM_STR);
+            $stmt->bindParam(':date', $postObj->date, PDO::PARAM_STR);
+            $stmt->bindParam(':url', $postObj->imageUrl, PDO::PARAM_STR);
+            $stmt->execute();
             $db->dbDisconnect();
         }
     }
@@ -67,12 +72,13 @@ class dbHandler extends Database{
         if(count($tempPosts) > 0){
             $index = 0;
             foreach($tempPosts as &$currentPost){
-                echo "<p>".$currentPost->username."</p>";
-                echo "<p>".$currentPost->text."</p>";
-                echo "<img src='".$currentPost->imageUrl."' width='300' height='200'>";
-                echo "Publicerat ".$currentPost->date;
-                echo "<a href='index.php?delPostDb=".$currentPost->id."' id='deleteBtn'>Radera Inlägg </a>";
-                echo "<p style='border-bottom:1px solid black;'></p>";
+                echo "<div id='PostContainer'>";
+                echo "<p id='PostInformation'>".$currentPost->username."'s thought on ".$currentPost->date."</p>";
+                echo "<a href='index.php?delPostDb=".$currentPost->id."' id='PostDelete'></a>";
+                echo "<p id='PostText'>".$currentPost->text."</p>";
+                if($currentPost->imageUrl != NULL)
+                    echo "<img id='PostImage' src='".$currentPost->imageUrl."'>";
+                echo "</div>";
                 $index++;
             }
         }
@@ -85,7 +91,8 @@ class dbHandler extends Database{
             $stmt = $db->connectionString->prepare($sql);
             $stmt->execute();
             $post = $stmt->fetch();
-            unlink($post[0]);
+            if(file_exists($post[0]))
+                unlink($post[0]);
             $sql = "DELETE FROM ProjectPosts where Id='".$id."'";
             $db->connectionString->query($sql);
             $db->dbDisconnect();

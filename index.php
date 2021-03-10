@@ -24,7 +24,12 @@ if(isset($_GET['delPostDb']) && isset($_SESSION['dbHandler'])){
     </form>
 </div>
 
-<div id="PostContainer"></div>
+<!--<div id="PostContainer">
+    <p id="PostInformation">test thoughts 2020-xx-xx-xxxxxx</p>
+    <a href="" id="PostDelete"></a>
+    <p id="PostText"></p>
+    <img id="PostImage" src='https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png'>
+</div>-->
 
 <?php
 if(isset($_SESSION['dbHandler'])){
