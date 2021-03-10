@@ -6,14 +6,12 @@ class dbHandler extends Database{
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "SELECT Id, Username, Post, PostDate FROM ProjectTable";
+            $sql = "SELECT Id, Username, Post, PostDate FROM ProjectPosts";
             $result = $db->connectionString->query($sql);
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                   $tempPost = new Post($row["Username"], $row["Post"], $row["PostDate"]);
-                   $tempPost->id = $row['Id'];
-                   $this->posts[] = $tempPost;
-                }
+            while($row = $result->fetch()) {
+                $tempPost = new Post($row["Username"], $row["Post"], $row["PostDate"]);
+                $tempPost->id = $row['Id'];
+                $this->posts[] = $tempPost;
             }
             $db->dbDisconnect();
         }
@@ -23,7 +21,7 @@ class dbHandler extends Database{
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "INSERT INTO ProjectTable (Username, Post, PostDate)
+            $sql = "INSERT INTO ProjectPosts (Username, Post, PostDate)
                     VALUES ('".$postObj->username."', '".$postObj->text."', '".$postObj->date."')";
             $db->connectionString->query($sql);
             $db->dbDisconnect();
@@ -48,9 +46,47 @@ class dbHandler extends Database{
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "DELETE FROM ProjectTable where Id='".$id."'";
+            $sql = "DELETE FROM ProjectPosts where Id='".$id."'";
             $db->connectionString->query($sql);
             $db->dbDisconnect();
+        }
+    }
+    public function login($username, $password){
+        $db = new Database();
+        $db->dbConnect();
+        if ($db->connectionString) {
+            $sql = "SELECT Password FROM ProjectUsers WHERE Username = :username";
+            $stmt = $db->connectionString->prepare($sql);
+            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+            $stmt->execute();
+            $users = $stmt->fetch();
+            if (isset($users[0])) {
+                if (password_verify($password, $users[0])) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+    }
+    public function register($username, $password){
+        $db = new Database();
+        $db->dbConnect();
+        if ($db->connectionString) {
+            try{
+                $username = filter_input(INPUT_POST, 'uname', FILTER_SANITIZE_STRING);
+                echo $username;
+                $hash = password_hash($password, PASSWORD_DEFAULT);
+                $sql = "INSERT INTO ProjectUsers (Username, Password) VALUES (:username,:password)";
+                $stmt = $db->connectionString->prepare($sql);
+                $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+                $stmt->bindParam(':password', $hash, PDO::PARAM_STR);
+                $stmt->execute();
+                return 1;
+            }
+            catch(PDOException $e){
+                return 0;
+            }
         }
     }
 }

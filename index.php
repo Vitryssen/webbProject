@@ -6,11 +6,6 @@ include("includes/centerContent.php");
 include("config/Dbconfig.php");
 include('classes/dbHandler.php');
 include('classes/post.php');
-if(!isset($_SESSION['dbHandler'])){
-    $dbHandler = new dbHandler();
-    $dbHandler->fetchPosts();
-    $_SESSION['dbHandler'] = serialize($dbHandler);
-}
 if(isset($_GET['delPostDb']) && isset($_SESSION['dbHandler'])){
     $dbHandler = unserialize($_SESSION['dbHandler']);
     $dbHandler->deletePost($_GET['delPostDb']);
@@ -18,13 +13,13 @@ if(isset($_GET['delPostDb']) && isset($_SESSION['dbHandler'])){
 ?>
 
 <h1>Thoughts</h1>
+
 <div id="TextInputBox">
-<form action="functions/addPostDb.php" method="post">
-<p id="usernameInput">Username: <input type="text" name="author"></p>
-<p id="thoughtText">Thought:<p> 
-<textarea id="thoughtInput" cols="40" rows="2" name="message"></textarea>
-<input id="sendButton" type="submit" name="addPost" value="Send Thought">
-</form>
+    <form action="functions/addPostDb.php" method="post">
+        <p id="thoughtText">Thought:<p> 
+        <textarea id="thoughtInput" cols="40" rows="2" name="message"></textarea>
+        <input id="sendButton" type="submit" name="addPost" value="Send Thought">
+    </form>
 </div>
 
 <div id="PostContainer"></div>

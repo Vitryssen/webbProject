@@ -23,7 +23,8 @@ class Database extends Dbconfig{
         $dbPara = NULL;
     }
     function dbConnect()    {
-        $this -> connectionString = new mysqli($this->hostName, $this->userName, $this->password, $this->databaseName);
+        $this -> connectionString = new PDO("mysql:host=".$this->hostName.";dbname=".$this->databaseName, $this->userName, $this->password);
+        $this->connectionString->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $this -> connectionString;
     }
     function dbDisconnect() {
