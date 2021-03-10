@@ -72,12 +72,12 @@ class dbHandler extends Database{
         if(count($tempPosts) > 0){
             $index = 0;
             foreach($tempPosts as &$currentPost){
-                echo "<div id='PostContainer'>";
-                echo "<p id='PostInformation'>".$currentPost->username."'s thought on ".$currentPost->date."</p>";
-                echo "<a href='index.php?delPostDb=".$currentPost->id."' id='PostDelete'></a>";
-                echo "<p id='PostText'>".$currentPost->text."</p>";
+                echo "<div class='PostContainer'>";
+                echo "<p class='PostInformation'>".$currentPost->username."'s thought on ".$currentPost->date."</p>";
+                echo "<a href='index.php?delPostDb=".$currentPost->id."' class='PostDelete'></a>";
+                echo "<p class='PostText'>".$currentPost->text."</p>";
                 if($currentPost->imageUrl != NULL)
-                    echo "<img id='PostImage' src='".$currentPost->imageUrl."'>";
+                    echo "<img class='PostImage' src='".$currentPost->imageUrl."' alt='Post Image'>";
                 echo "</div>";
                 $index++;
             }

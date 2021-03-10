@@ -19,13 +19,13 @@ include("includes/config.php");
             <nav id="mainmenu">
                 <ul>
                     <li><a id="loginText">Login</a></li>
-                    <form id="loginForm" action="functions/login.php" method="post">
-                    <?php if(isset($_SESSION['error']))echo "<li><a id='loginError'>".$_SESSION['error']."</a></li>"; ?>
-                    <p id="">Username: <input type="text" name="uname"></p>
-                    <p id="">Password:<input type="password" name="pword"></p> 
-                    <input id="" type="submit" name="login" value="Login">
-                    <input id="" type="submit" name="register" value="Register">
-                    </form>
                 </ul>
+                <form id="loginForm" action="functions/login.php" method="post">
+                    <?php if(isset($_SESSION['error']))echo "<li><a id='loginError'>".$_SESSION['error']."</a></li>"; ?>
+                    <p>Username: <input type="text" name="uname"></p>
+                    <p>Password:<input type="password" name="pword"></p> 
+                    <input type="submit" name="login" value="Login">
+                    <input type="submit" name="register" value="Register">
+                </form>
             </nav>
         </header>
