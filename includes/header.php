@@ -2,7 +2,11 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+session_start();
 include("includes/config.php"); 
+if(!isset($_SESSION['uname'])){
+    header("Location: login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="sv">
@@ -18,7 +22,8 @@ include("includes/config.php");
             <nav id="mainmenu">
                 <ul>
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="omsidan.php">About</a></li>
+                    <li><a href="about.php">About</a></li>
+                    <li><a href="functions/logout.php">Logout</a></li>
                 </ul>
             </nav>
         </header>

@@ -6,26 +6,63 @@ class dbHandler extends Database{
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "SELECT Id, Username, Post, PostDate FROM ProjectTable";
+            $sql = "SELECT Id, Username, Post, PostDate, imageUrl FROM ProjectPosts";
             $result = $db->connectionString->query($sql);
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                   $tempPost = new Post($row["Username"], $row["Post"], $row["PostDate"]);
-                   $tempPost->id = $row['Id'];
-                   $this->posts[] = $tempPost;
-                }
+            while($row = $result->fetch()) {
+                $tempPost = new Post($row["Username"], $row["Post"], $row["PostDate"], $row["imageUrl"]);
+                $tempPost->id = $row['Id'];
+                $this->posts[] = $tempPost;
             }
             $db->dbDisconnect();
         }
+    }
+    public function uploadFile(){
+        $target_dir = "../../writeable/uploads/";
+        $target_file = $target_dir . basename($_FILES["file"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $fileName = uniqid(rand(), true) . ".".$imageFileType;
+        $target_file = $target_dir . $fileName;
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+            if($check !== false) {
+                echo "File is an image - " . $check["mime"] . ".";
+                $uploadOk = 1;
+            } 
+            else {
+                echo "File is not an image.";
+                $uploadOk = 0;
+            }
+        }
+        if (file_exists($target_file)) {
+            $uploadOk = 0;
+        }
+        if ($_FILES["file"]["size"] > 500000) {
+            $uploadOk = 0;
+        }
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" ) {
+            $uploadOk = 0;
+        }
+        if($uploadOk){
+            move_uploaded_file($_FILES["file"]["tmp_name"], $target_file);
+            return $fileName;
+        }
+        return 0;
     }
     public function addPost($postObj){
         $this->posts[] = $postObj;
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "INSERT INTO ProjectTable (Username, Post, PostDate)
-                    VALUES ('".$postObj->username."', '".$postObj->text."', '".$postObj->date."')";
-            $db->connectionString->query($sql);
+            $sql = "INSERT INTO ProjectPosts (Username, Post, PostDate, imageUrl)
+                    VALUES (:username, :text, :date, :url)";
+            $stmt = $db->connectionString->prepare($sql);
+            $stmt->bindParam(':username', $postObj->username, PDO::PARAM_STR);
+            $stmt->bindParam(':text', $postObj->text, PDO::PARAM_STR);
+            $stmt->bindParam(':date', $postObj->date, PDO::PARAM_STR);
+            $stmt->bindParam(':url', $postObj->imageUrl, PDO::PARAM_STR);
+            $stmt->execute();
             $db->dbDisconnect();
         }
     }
@@ -35,11 +72,13 @@ class dbHandler extends Database{
         if(count($tempPosts) > 0){
             $index = 0;
             foreach($tempPosts as &$currentPost){
-                echo "<p>".$currentPost->username."</p>";
-                echo "<p>".$currentPost->text."</p>";
-                echo "Publicerat ".$currentPost->date;
-                echo "<a href='index.php?delPostDb=".$currentPost->id."' id='deleteBtn'>Radera Inlägg </a>";
-                echo "<p style='border-bottom:1px solid black;'></p>";
+                echo "<div class='PostContainer'>";
+                echo "<p class='PostInformation'>".$currentPost->username."'s thought on ".$currentPost->date."</p>";
+                echo "<a href='index.php?delPostDb=".$currentPost->id."' class='PostDelete'></a>";
+                echo "<p class='PostText'>".$currentPost->text."</p>";
+                if($currentPost->imageUrl != NULL)
+                    echo "<img class='PostImage' src='".$currentPost->imageUrl."' alt='Post Image'>";
+                echo "</div>";
                 $index++;
             }
         }
@@ -48,9 +87,53 @@ class dbHandler extends Database{
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {
-            $sql = "DELETE FROM ProjectTable where Id='".$id."'";
+            $sql = "SELECT imageUrl FROM ProjectPosts where Id='".$id."'";
+            $stmt = $db->connectionString->prepare($sql);
+            $stmt->execute();
+            $post = $stmt->fetch();
+            if(file_exists($post[0]))
+                unlink($post[0]);
+            $sql = "DELETE FROM ProjectPosts where Id='".$id."'";
             $db->connectionString->query($sql);
             $db->dbDisconnect();
+        }
+    }
+    public function login($username, $password){
+        $db = new Database();
+        $db->dbConnect();
+        if ($db->connectionString) {
+            $sql = "SELECT Password FROM ProjectUsers WHERE Username = :username";
+            $stmt = $db->connectionString->prepare($sql);
+            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+            $stmt->execute();
+            $users = $stmt->fetch();
+            if (isset($users[0])) {
+                if (password_verify($password, $users[0])) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+    }
+    public function register($username, $password){
+        $db = new Database();
+        $db->dbConnect();
+        if ($db->connectionString) {
+            try{
+                $username = filter_input(INPUT_POST, 'uname', FILTER_SANITIZE_STRING);
+                echo $username;
+                $hash = password_hash($password, PASSWORD_DEFAULT);
+                $sql = "INSERT INTO ProjectUsers (Username, Password) VALUES (:username,:password)";
+                $stmt = $db->connectionString->prepare($sql);
+                $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+                $stmt->bindParam(':password', $hash, PDO::PARAM_STR);
+                $stmt->execute();
+                return 1;
+            }
+            catch(PDOException $e){
+                return 0;
+            }
         }
     }
 }

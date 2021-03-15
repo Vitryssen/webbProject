@@ -1,6 +1,9 @@
 body {
     margin: 0px;
 }
+#container{
+    overflow: hidden;
+}
 #centercontent {
     margin-left: auto;
     margin-right: auto;
@@ -37,35 +40,46 @@ body {
 #mainmenu ul li a:hover {
     background-color: #111111;
 }
+#loginText:hover{
+    background-color: #333333 !important;
+}
+#coverPhoto{
+    width: 125%;
+    object-fit: cover;
+    margin-left: -10%;
+}
+#loginForm {
+    color: white;
+    margin-right: 20px;
+    float: right;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    margin-top: -55px;
+}
+#loginError{
+    color: red  !important;
+    background-color: #333333 !important;
+}
 #TextInputBox {
     height: 200px;
     width: 80%;
     border: 1px solid black;
-    border-radius: 20px;
     margin-left: auto;
     margin-right: auto;
     justify-content: center;
     margin-bottom: 50px;
     position: relative;
 }
-#PostContainer {
-    height: 200px;
-    width: 60%;
-    border: 1px solid black;
-    margin-left: auto;
-    margin-right: auto;
-    justify-content: center;
-    margin-bottom: 50px;
-}
 #thoughtInput{
-    height: 50%;
-    width: 75%;
+    height: 75%;
+    width: 70%;
     bottom: 10px;
     left: 10px;
     position: absolute;
 }
 #thoughtText{
-    top: 20%;
+    top: 0;
     left: 10px;
     position: absolute;
 }
@@ -75,9 +89,65 @@ body {
     position: absolute;
 }
 #sendButton{
-    width: 20%;
+    width: 25%;
     bottom: 10px;
     right: 10px;
     position: absolute;
     border-radius: 25px;
+}
+#fileButton{
+    width: 25%;
+    bottom: 35px;
+    right: 0;
+    position: absolute;
+}
+.PostContainer {
+    height: 200px;
+    width: 60%;
+    border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    margin-bottom: 50px;
+    overflow: auto;
+}
+.PostInformation{
+    float: left;
+    padding-left: 10px;
+    border-bottom: 1px solid black;
+}
+.PostDelete{
+    display: block;
+    width: 5%;
+    height: 15%;
+    float: right;
+    background-image: url("data:image/png;base64,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");
+    background-size: cover;
+    margin-top: 1%;
+    margin-right: 1%;
+}
+.PostText{
+    margin-top: 10%;
+}
+.PostImage{
+    width: 100%;
+}
+#AboutContainer{
+    border-left: 5px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    margin-bottom: 50px;
+    position: relative;
+    width: 15%;
+    margin-top: 2.5%;
+}
+#AboutImage{
+    width: 100%;
+}
+#AboutName{
+    margin-left: 2.5%;
+}
+#AboutMail{
+    margin-left: 2.5%;
 }
