@@ -13,6 +13,7 @@ include("includes/config.php");
 <!DOCTYPE html>
 <html lang="sv">
 <head>
+    <!--Set the page titel with given variables-->
     <title><?= $site_title . $divider . $page_title; ?></title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/stilmall.css" type="text/css">
@@ -20,11 +21,11 @@ include("includes/config.php");
 <body>
     <div id="container">
         <header id="mainheader">
-            <!--<h1>PHP Struktur</h1>-->
             <nav id="mainmenu">
                 <ul>
                     <li><a id="loginText">Login</a></li>
                 </ul>
+                <!--Output the login form and any error message if its set-->
                 <form id="loginForm" action="functions/login.php" method="post">
                     <?php if(isset($_SESSION['error']))echo "<li><a id='loginError'>".$_SESSION['error']."</a></li>"; ?>
                     <p>Username: <input type="text" name="uname"></p>

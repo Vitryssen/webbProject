@@ -10,12 +10,14 @@ class Post {
     private $date;
     private $id;
     private $imageUrl;
+    //Construct the object with values
     public function __construct($u, $t, $d, $i){
         $this->username = $u;
         $this->text = $t;
         $this->date = $d;
         $this->imageUrl = $i;
     }
+    //Getters and setters for the different properties
     public function __get($property) {
         if (property_exists($this, $property)) {
           return $this->$property;

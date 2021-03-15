@@ -9,6 +9,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 include("includes/config.php"); 
+//Check to see if user is logged in, if not redirect user to login page
 if(!isset($_SESSION['uname'])){
     header("Location: login.php");
 }
@@ -16,6 +17,7 @@ if(!isset($_SESSION['uname'])){
 <!DOCTYPE html>
 <html lang="sv">
 <head>
+    <!--Set the page titel with given variables-->
     <title><?= $site_title . $divider . $page_title; ?></title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/stilmall.css" type="text/css">
@@ -24,7 +26,6 @@ if(!isset($_SESSION['uname'])){
 <body>
     <div id="container">
         <header id="mainheader">
-            <!--<h1>PHP Struktur</h1>-->
             <nav id="mainmenu">
                 <ul>
                     <li><a href="index.php">Home</a></li>

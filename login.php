@@ -9,10 +9,12 @@ include("includes/loginHeader.php");
 include("config/Dbconfig.php");
 include('classes/dbHandler.php');
 include('classes/post.php');
+//Create new db handler and set session variable if not set
 if(!isset($_SESSION['dbHandler'])){
     $dbHandler = new dbHandler();
     $_SESSION['dbHandler'] = serialize($dbHandler);
 }
+//if a user is logged in send them to index instead
 if(isset($_SESSION['uname']))
     header("Location: index.php");
 ?>

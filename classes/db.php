@@ -14,7 +14,7 @@ class Database extends Dbconfig{
     protected $hostName;
     protected $userName;
     protected $password;
-
+    //Initilize all variables on consctruct
     function __construct() {
         $this -> connectionString = NULL;
         $this -> sqlQuery = NULL;
@@ -27,11 +27,13 @@ class Database extends Dbconfig{
         $this -> password = $dbPara ->password;
         $dbPara = NULL;
     }
+    //Starts a connection string with values from db config
     function dbConnect()    {
         $this -> connectionString = new PDO("mysql:host=".$this->hostName.";dbname=".$this->databaseName, $this->userName, $this->password);
         $this->connectionString->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $this -> connectionString;
     }
+    //Disconnects the client by setting all variables to null
     function dbDisconnect() {
         $this -> connectionString = NULL;
         $this -> sqlQuery = NULL;

@@ -9,6 +9,7 @@ include("includes/header.php");
 include("config/Dbconfig.php");
 include('classes/dbHandler.php');
 include('classes/post.php');
+//Gets the dbhandler object and deletes the given post if user has clicked X on a post
 if(isset($_GET['delPostDb']) && isset($_SESSION['dbHandler'])){
     $dbHandler = unserialize($_SESSION['dbHandler']);
     $dbHandler->deletePost($_GET['delPostDb']);
@@ -29,10 +30,13 @@ if(isset($_GET['delPostDb']) && isset($_SESSION['dbHandler'])){
 </div>
 </section>
 <?php
+//gets the db handler object and outputs all the posts if its set
 if(isset($_SESSION['dbHandler'])){
     $dbHandler = unserialize($_SESSION['dbHandler']);
     $dbHandler->showPosts();
 }
+//else creates a new db handler object, fetches all the posts and outputs them
+//then set the dbhandler session variable
 else{
     $dbHandler = new dbHandler();
     $dbHandler->showPosts();

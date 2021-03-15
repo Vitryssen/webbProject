@@ -11,14 +11,18 @@ include('../classes/dbHandler.php');
 include('../classes/post.php');
 session_start();
 $Shop = new dbHandler();
+//checks that the user is logged in and that values are not empty
 if(isset($_SESSION['uname']) && isset($_REQUEST['message'])){
     if(strlen($_SESSION['uname']) > 0 && strlen($_REQUEST['message']) > 0){
+        //Sanitizes the input, creates a new post object
         $newPost = new Post($_SESSION['uname'], filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING), date('m/d/Y H:i:s', time()), NULL);
+        //If a file is selected run the corresponding function
         if(isset($_FILES['file'])){
             $temp = $Shop->uploadFile();
-            if($temp != 0)
+            if($temp != 0) //If the file was uploaded set the imageUrl variable to the correct path
                 $newPost->imageUrl = "../writeable/uploads/".$temp;
         }
+        //Adds the post to the database
         $Shop->addPost($newPost);
     }
 }
