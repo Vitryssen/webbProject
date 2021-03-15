@@ -1,3 +1,8 @@
+<!--
+André Nordlund
+VT21 DT100G/DT058G Datateknik Webbprogrammering 7.5 HP
+About sida
+ -->
 <?php
 $page_title = "About Page";
 include("includes/header.php");

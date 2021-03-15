@@ -1,3 +1,9 @@
+<!--
+André Nordlund
+VT21 DT100G/DT058G Datateknik Webbprogrammering 7.5 HP
+Denna klass hanterar all kommunikation mellan databasen och användaren tex
+att ta bort eller lägga till nya inlägg
+ -->
 <?php
 include("db.php");
 class dbHandler extends Database{

@@ -1,3 +1,8 @@
+<!--
+André Nordlund
+VT21 DT100G/DT058G Datateknik Webbprogrammering 7.5 HP
+Denna klass hanterar anslutningen till databasen
+ -->
 <?php
 include_once(__DIR__."/../config/Dbconfig.php");
 class Database extends Dbconfig{

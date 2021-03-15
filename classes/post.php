@@ -1,3 +1,8 @@
+<!--
+André Nordlund
+VT21 DT100G/DT058G Datateknik Webbprogrammering 7.5 HP
+Denna klass hanterar objektet post som är strukturen som används för att skriva ut inlägg
+ -->
 <?php
 class Post {
     private $username;

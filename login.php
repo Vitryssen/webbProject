@@ -1,3 +1,8 @@
+<!--
+André Nordlund
+VT21 DT100G/DT058G Datateknik Webbprogrammering 7.5 HP
+Login sida
+ -->
 <?php
 $page_title = "Login Page";
 include("includes/loginHeader.php");

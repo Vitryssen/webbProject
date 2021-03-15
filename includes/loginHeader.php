@@ -1,3 +1,8 @@
+<!--
+André Nordlund
+VT21 DT100G/DT058G Datateknik Webbprogrammering 7.5 HP
+Headern för inloggning
+ -->
 <?php 
 session_start();
 ini_set('display_errors', 1);

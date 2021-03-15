@@ -1,4 +1,9 @@
 
+<!--
+André Nordlund
+VT21 DT100G/DT058G Datateknik Webbprogrammering 7.5 HP
+Hanterar hur footern ska se ut på varje sida
+ -->
 <footer id="mainfooter">
             <?php
             if(isset($_SESSION['uname'])){

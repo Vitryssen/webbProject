@@ -1,3 +1,8 @@
+<!--
+André Nordlund
+VT21 DT100G/DT058G Datateknik Webbprogrammering 7.5 HP
+Hanterar headern för alla sidor förutom login
+ -->
 <?php 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
