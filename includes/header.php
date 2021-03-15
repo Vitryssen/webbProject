@@ -14,6 +14,7 @@ if(!isset($_SESSION['uname'])){
     <title><?= $site_title . $divider . $page_title; ?></title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/stilmall.css" type="text/css">
+    <script src="js/scripts.js"></script> 
 </head>
 <body>
     <div id="container">

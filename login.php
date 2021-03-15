@@ -8,6 +8,8 @@ if(!isset($_SESSION['dbHandler'])){
     $dbHandler = new dbHandler();
     $_SESSION['dbHandler'] = serialize($dbHandler);
 }
+if(isset($_SESSION['uname']))
+    header("Location: index.php");
 ?>
 <img id="coverPhoto" alt="Landing page image" src="https://i.pinimg.com/originals/c2/4b/e8/c24be8b914079df7aad2e3fb267d40f7.jpg"/>
 <?php

@@ -151,3 +151,17 @@ body {
 #AboutMail{
     margin-left: 2.5%;
 }
+#FooterDown, #FooterUp{
+    width: 3%;
+    height: 95%;
+    float: left;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+#FooterUp{
+    background-image: url("../../writeable/up.png");
+}
+#FooterDown{
+    background-image: url("../../writeable/down.png");
+}
