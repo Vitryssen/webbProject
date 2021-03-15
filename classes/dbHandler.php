@@ -5,6 +5,7 @@ class dbHandler extends Database{
     public function fetchPosts(){
         $db = new Database();
         $db->dbConnect();
+        $this->posts = array();
         if ($db->connectionString) {
             $sql = "SELECT Id, Username, Post, PostDate, imageUrl FROM ProjectPosts";
             $result = $db->connectionString->query($sql);
@@ -51,7 +52,6 @@ class dbHandler extends Database{
         return 0;
     }
     public function addPost($postObj){
-        $this->posts[] = $postObj;
         $db = new Database();
         $db->dbConnect();
         if ($db->connectionString) {

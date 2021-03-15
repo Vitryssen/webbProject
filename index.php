@@ -28,14 +28,10 @@ if(isset($_SESSION['dbHandler'])){
     $dbHandler = unserialize($_SESSION['dbHandler']);
     $dbHandler->showPosts();
 }
-<<<<<<< HEAD
-=======
 else{
     $dbHandler = new dbHandler();
-    $dbHandler->fetchPosts();
     $dbHandler->showPosts();
-    $_SESSION['dbHandler'] = $dbHandler;
+    $_SESSION['dbHandler'] = serialize($dbHandler);
 }
->>>>>>> 27f057a3b130a8fd559b3fa4303a6a96b1912765
 include("includes/footer.php");
 ?>
