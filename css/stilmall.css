@@ -1,30 +1,6 @@
 body {
     margin: 0px;
 }
-#deleteBtn{
-    background-color: #db3d16;
-    border: none;
-    border-radius: 25px;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 16px;
-    cursor: pointer;
-}
-#sidebar {
-    float: right;
-    width: 20%;
-    border: 1px solid black;
-    margin-bottom:40px;
-}
-#leftcontent {
-    width: 79%;
-    float: left;
-    margin-bottom: 40px;
-}
 #centercontent {
     margin-left: auto;
     margin-right: auto;
@@ -60,4 +36,48 @@ body {
 }
 #mainmenu ul li a:hover {
     background-color: #111111;
+}
+#TextInputBox {
+    height: 200px;
+    width: 80%;
+    border: 1px solid black;
+    border-radius: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+#PostContainer {
+    height: 200px;
+    width: 60%;
+    border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+#thoughtInput{
+    height: 50%;
+    width: 75%;
+    bottom: 10px;
+    left: 10px;
+    position: absolute;
+}
+#thoughtText{
+    top: 20%;
+    left: 10px;
+    position: absolute;
+}
+#usernameInput{
+    top: 0;
+    left: 2%;
+    position: absolute;
+}
+#sendButton{
+    width: 20%;
+    bottom: 10px;
+    right: 10px;
+    position: absolute;
+    border-radius: 25px;
 }
